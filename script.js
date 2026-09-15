@@ -299,49 +299,59 @@ function generateReport() {
         analyticsBody.appendChild(row);
     });
     
-    // Update top absent
+    // Update top absent - показываем только тех, у кого есть отсутствия
     const topAbsentList = document.getElementById('topAbsentList');
     topAbsentList.innerHTML = '';
     
     const topAbsentMembers = sortedMembers
         .map(m => ({ member: m, count: stats[m.id].absent }))
+        .filter(item => item.count > 0) // Показываем только тех, у кого count > 0
         .sort((a, b) => b.count - a.count)
         .slice(0, 3);
     
-    topAbsentMembers.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'top-item error';
-        div.innerHTML = `
-            <div class="top-rank error">${index + 1}.</div>
-            <div class="top-info">
-                <div class="top-name">${escapeHtml(item.member.name)}</div>
-                <div class="top-count">Отсутствий: ${item.count}</div>
-            </div>
-        `;
-        topAbsentList.appendChild(div);
-    });
+    if (topAbsentMembers.length === 0) {
+        topAbsentList.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">Нет данных об отсутствиях</p>';
+    } else {
+        topAbsentMembers.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'top-item error';
+            div.innerHTML = `
+                <div class="top-rank error">${index + 1}.</div>
+                <div class="top-info">
+                    <div class="top-name">${escapeHtml(item.member.name)}</div>
+                    <div class="top-count">Отсутствий: ${item.count}</div>
+                </div>
+            `;
+            topAbsentList.appendChild(div);
+        });
+    }
     
-    // Update top valid absent
+    // Update top valid absent - показываем только тех, у кого есть уважительные причины
     const topAbsentValidList = document.getElementById('topAbsentValidList');
     topAbsentValidList.innerHTML = '';
     
     const topValidAbsentMembers = sortedMembers
         .map(m => ({ member: m, count: stats[m.id].valid_absent }))
+        .filter(item => item.count > 0) // Показываем только тех, у кого count > 0
         .sort((a, b) => b.count - a.count)
         .slice(0, 3);
     
-    topValidAbsentMembers.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'top-item warning';
-        div.innerHTML = `
-            <div class="top-rank warning">${index + 1}.</div>
-            <div class="top-info">
-                <div class="top-name">${escapeHtml(item.member.name)}</div>
-                <div class="top-count">Уважительные причины: ${item.count}</div>
-            </div>
-        `;
-        topAbsentValidList.appendChild(div);
-    });
+    if (topValidAbsentMembers.length === 0) {
+        topAbsentValidList.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">Нет данных об уважительных причинах</p>';
+    } else {
+        topValidAbsentMembers.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'top-item warning';
+            div.innerHTML = `
+                <div class="top-rank warning">${index + 1}.</div>
+                <div class="top-info">
+                    <div class="top-name">${escapeHtml(item.member.name)}</div>
+                    <div class="top-count">Уважительные причины: ${item.count}</div>
+                </div>
+            `;
+            topAbsentValidList.appendChild(div);
+        });
+    }
 }
 
 // Event listeners
