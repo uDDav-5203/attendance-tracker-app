@@ -10,6 +10,12 @@
     <div class="container">
         <div class="header">
             <h1>📊 Отслеживание посещаемости</h1>
+            <div class="admin-access" aria-label="Доступ администратора">
+                <label for="adminPassword">Код администратора:</label>
+                <input type="password" id="adminPassword" placeholder="Введите код доступа" autocomplete="off">
+                <button id="adminLoginBtn" class="btn btn-primary" type="button">Войти</button>
+                <span id="adminStatus" class="admin-status">Доступ закрыт</span>
+            </div>
             <div class="controls">
                 <div class="date-control">
                     <label for="dateInput">Дата:</label>
@@ -42,71 +48,42 @@
                                 <th>Действия</th>
                             </tr>
                         </thead>
-                        <tbody id="attendanceTableBody">
-                        </tbody>
+                        <tbody id="attendanceTableBody"></tbody>
                     </table>
                 </div>
 
                 <div class="members-management">
                     <h2>Управление участниками</h2>
                     <div class="add-member">
-                        <input type="text" id="newMemberInput" placeholder="Введите имя участника">
-                        <button id="addMemberBtn" class="btn btn-primary">+ Добавить</button>
+                        <input type="text" id="newMemberInput" placeholder="Введите имя участника" disabled>
+                        <button id="addMemberBtn" class="btn btn-primary" disabled>+ Добавить</button>
                     </div>
-                    <div class="members-list" id="membersList">
-                    </div>
+                    <p id="adminHint" class="admin-hint">Введите код администратора сверху, чтобы добавлять, изменять и удалять участников.</p>
+                    <div class="members-list" id="membersList"></div>
                 </div>
             </div>
 
             <div class="analytics-section">
                 <h2>📈 Аналитика</h2>
-                
                 <div class="analytics-period">
                     <h3>Выбрать период</h3>
                     <div class="period-inputs">
-                        <div>
-                            <label for="startDate">С:</label>
-                            <input type="date" id="startDate">
-                        </div>
-                        <div>
-                            <label for="endDate">По:</label>
-                            <input type="date" id="endDate">
-                        </div>
+                        <div><label for="startDate">С:</label><input type="date" id="startDate"></div>
+                        <div><label for="endDate">По:</label><input type="date" id="endDate"></div>
                         <button id="generateReportBtn" class="btn btn-secondary">Создать отчет</button>
                     </div>
                 </div>
-
                 <div class="analytics-stats">
                     <table class="analytics-table" id="analyticsTable">
-                        <thead>
-                            <tr>
-                                <th>Имя</th>
-                                <th>Присутствий</th>
-                                <th>Отсутствий</th>
-                                <th>Уважительных</th>
-                                <th>Процент посещаемости</th>
-                            </tr>
-                        </thead>
-                        <tbody id="analyticsTableBody">
-                        </tbody>
+                        <thead><tr><th>Имя</th><th>Присутствий</th><th>Отсутствий</th><th>Уважительных</th><th>Процент посещаемости</th></tr></thead>
+                        <tbody id="analyticsTableBody"></tbody>
                     </table>
                 </div>
-
-                <div class="top-absent">
-                    <h3>🔴 Топ 3 с наиболее частыми отсутствиями</h3>
-                    <div id="topAbsentList" class="top-list">
-                    </div>
-                </div>
-
-                <div class="top-absent-valid">
-                    <h3>⚠️ Топ 3 с наиболее частыми уважительными причинами</h3>
-                    <div id="topAbsentValidList" class="top-list">
-                    </div>
-                </div>
+                <div class="top-absent"><h3>🔴 Топ 3 с наиболее частыми отсутствиями</h3><div id="topAbsentList" class="top-list"></div></div>
+                <div class="top-absent-valid"><h3>⚠️ Топ 3 с наиболее частыми уважительными причинами</h3><div id="topAbsentValidList" class="top-list"></div></div>
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
