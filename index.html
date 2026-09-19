@@ -7,83 +7,46 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div id="visitorGate" class="visitor-gate">
+        <div class="visitor-gate-card">
+            <h1>📊 Посещаемость</h1>
+            <p>Введите пароль посетителя, чтобы продолжить</p>
+            <form id="visitorLoginForm">
+                <input type="password" id="visitorPassword" placeholder="Пароль посетителя" autocomplete="current-password" required>
+                <button class="btn btn-primary" type="submit">Войти</button>
+            </form>
+            <p id="visitorLoginError" class="login-error" hidden>Неверный пароль</p>
+        </div>
+    </div>
+
+    <main id="app" class="container" hidden>
         <div class="header">
             <h1>📊 Отслеживание посещаемости</h1>
             <div class="admin-access" aria-label="Доступ администратора">
                 <label for="adminPassword">Код администратора:</label>
-                <input type="password" id="adminPassword" placeholder="Введите код доступа" autocomplete="off">
+                <input type="password" id="adminPassword" placeholder="Введите код администратора" autocomplete="off">
                 <button id="adminLoginBtn" class="btn btn-primary" type="button">Войти</button>
                 <span id="adminStatus" class="admin-status">Доступ закрыт</span>
             </div>
+            <div id="changeVisitorPassword" class="admin-password-panel" hidden>
+                <label for="newVisitorPassword">Новый пароль посетителя:</label>
+                <input type="password" id="newVisitorPassword" placeholder="Введите новый пароль" autocomplete="new-password">
+                <button id="changeVisitorPasswordBtn" class="btn btn-secondary" type="button">Изменить пароль посетителя</button>
+                <span id="passwordChangeMessage" class="admin-hint"></span>
+            </div>
             <div class="controls">
-                <div class="date-control">
-                    <label for="dateInput">Дата:</label>
-                    <input type="date" id="dateInput">
-                </div>
-                <div class="sort-control">
-                    <label for="sortSelect">Сортировка:</label>
-                    <select id="sortSelect">
-                        <option value="name">По имени (А-Я)</option>
-                        <option value="name-desc">По имени (Я-А)</option>
-                        <option value="absent-most">Чаще всего отсутствовали</option>
-                        <option value="present-most">Чаще всего присутствовали</option>
-                    </select>
-                </div>
+                <div class="date-control"><label for="dateInput">Дата:</label><input type="date" id="dateInput"></div>
+                <div class="sort-control"><label for="sortSelect">Сортировка:</label><select id="sortSelect"><option value="name">По имени (А-Я)</option><option value="name-desc">По имени (Я-А)</option><option value="absent-most">Чаще всего отсутствовали</option><option value="present-most">Чаще всего присутствовали</option></select></div>
             </div>
         </div>
-
         <div class="content">
             <div class="main-section">
-                <div class="attendance-section">
-                    <h2>Отметить посещаемость</h2>
-                    <table class="attendance-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Имя</th>
-                                <th class="status-header">Присутствует</th>
-                                <th class="status-header">Отсутствует</th>
-                                <th class="status-header">Уважительная причина</th>
-                                <th>Действия</th>
-                            </tr>
-                        </thead>
-                        <tbody id="attendanceTableBody"></tbody>
-                    </table>
-                </div>
-
-                <div class="members-management">
-                    <h2>Управление участниками</h2>
-                    <div class="add-member">
-                        <input type="text" id="newMemberInput" placeholder="Введите имя участника" disabled>
-                        <button id="addMemberBtn" class="btn btn-primary" disabled>+ Добавить</button>
-                    </div>
-                    <p id="adminHint" class="admin-hint">Введите код администратора сверху, чтобы добавлять, изменять и удалять участников.</p>
-                    <div class="members-list" id="membersList"></div>
-                </div>
+                <div class="attendance-section"><h2>Отметить посещаемость</h2><table class="attendance-table"><thead><tr><th>#</th><th>Имя</th><th class="status-header">Присутствует</th><th class="status-header">Отсутствует</th><th class="status-header">Уважительная причина</th><th>Действия</th></tr></thead><tbody id="attendanceTableBody"></tbody></table></div>
+                <div class="members-management"><h2>Управление участниками</h2><div class="add-member"><input type="text" id="newMemberInput" placeholder="Введите имя участника" disabled><button id="addMemberBtn" class="btn btn-primary" disabled>+ Добавить</button></div><p id="adminHint" class="admin-hint">Введите код администратора сверху, чтобы управлять участниками.</p><div class="members-list" id="membersList"></div></div>
             </div>
-
-            <div class="analytics-section">
-                <h2>📈 Аналитика</h2>
-                <div class="analytics-period">
-                    <h3>Выбрать период</h3>
-                    <div class="period-inputs">
-                        <div><label for="startDate">С:</label><input type="date" id="startDate"></div>
-                        <div><label for="endDate">По:</label><input type="date" id="endDate"></div>
-                        <button id="generateReportBtn" class="btn btn-secondary">Создать отчет</button>
-                    </div>
-                </div>
-                <div class="analytics-stats">
-                    <table class="analytics-table" id="analyticsTable">
-                        <thead><tr><th>Имя</th><th>Присутствий</th><th>Отсутствий</th><th>Уважительных</th><th>Процент посещаемости</th></tr></thead>
-                        <tbody id="analyticsTableBody"></tbody>
-                    </table>
-                </div>
-                <div class="top-absent"><h3>🔴 Топ 3 с наиболее частыми отсутствиями</h3><div id="topAbsentList" class="top-list"></div></div>
-                <div class="top-absent-valid"><h3>⚠️ Топ 3 с наиболее частыми уважительными причинами</h3><div id="topAbsentValidList" class="top-list"></div></div>
-            </div>
+            <div class="analytics-section"><h2>📈 Аналитика</h2><div class="analytics-period"><h3>Выбрать период</h3><div class="period-inputs"><div><label for="startDate">С:</label><input type="date" id="startDate"></div><div><label for="endDate">По:</label><input type="date" id="endDate"></div><button id="generateReportBtn" class="btn btn-secondary">Создать отчет</button></div></div><div class="analytics-stats"><table class="analytics-table"><thead><tr><th>Имя</th><th>Присутствий</th><th>Отсутствий</th><th>Уважительных</th><th>Процент посещаемости</th></tr></thead><tbody id="analyticsTableBody"></tbody></table></div><div class="top-absent"><h3>🔴 Топ 3 с наиболее частыми отсутствиями</h3><div id="topAbsentList" class="top-list"></div></div><div class="top-absent-valid"><h3>⚠️ Топ 3 с наиболее частыми уважительными причинами</h3><div id="topAbsentValidList" class="top-list"></div></div></div>
         </div>
-    </div>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
